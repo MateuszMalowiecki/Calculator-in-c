@@ -1,0 +1,48 @@
+Autor: Mateusz Małowiecki 300774.
+Opis działania: 
+Kalkulator w ncurses.h. Obsługuje operacje dodawania, odejmowania, mnożenia, dzielenia oraz wyrażenia onawiasowane na liczbach całkowitych oraz zmiennoprzecinkowych, dodatnich oraz ujemnych(UWAGA : Przy operacjach mnożenia i dzielenia na liczbach ujemnych zamiast liczby ujemnej '-b' należy wpisać '0-b', np. zamiast 7*(-8) należy wpisać 7*(0-8)). Pobiera jako argument wyrażenie wprowadzone z wejścia przy pomocy klawiatury, lub myszki (myszka działa tylko w trybie tekstowym) i zwraca wynik tego wyrażenia. Dodatkowo dzięki bibiliotece GMP.h kalkulator potrafi obliczać wyrażenia składające się z liczb spoza unsigned long long int. Uruchamiany przy pomocy instrukcji Makefile. Przyciski esc i q kończą działanie kalkulatora.
+Opis interfejsu kalkulatora:
+Na samej górze znajduje się input kalkulatora. Pod inputem z lewej strony znajdują się przyciski z liczbami i dostępnymi operacjami. Po środku znajdują się przyciski cofania, nawiasów, równości oraz niedziałające przyciski potęgi kwadratowej i pierwiastka kwadratowego z liczby. Z prawej strony znajduje się przestrzeń zarezerwowana (nie wykorzystana) na przyciski sin, log itd.
+ Podział na moduły :
+- main.c - Plik z funkcją main
+- Makefile - Instrukcje kompilacji programu
+- init.h - Plik inicjujący kalkukator
+- counitng.h - Plik w którym wykonywane są obliczenia.
+Funkcje:
+init.h:
+-init_ncurses - funkcja umożliwiająca tworzenie okien w ncurses. 
+-init_calc - inicjacja interfejsu kalkulatora wraz z pryzciskami i '"inputem".
+-finalize_ncurses - funkcja kończąca działanie programu.
+-create_newwin - funkcja tworząca główne okno kalkulatora.
+-create_subwin - funkcja tworząca okna przycisków w oknie kalkulatora.
+-is_window_click - funkcja sprwadzająca czy nastąpiło naciśnicęcie danego okna myszką.
+-init_input_w - funkcja tworząca okno inputa w kalkulatorze.
+-destroy_win - funkcja kończąca działanie okna local_win.
+counitng.h:
+-isop - Funkcja sprwadzająca czy znak c jest operatorem.
+-isnum - Funkcja sprawdzająca czy znak c jest cyfrą.
+-isbracket - Funkcja sprawdzająca czy znak c jest okrągłym nawiasem.
+-isinput - Funkcja sprawdzająca czy znak c jest operatorem, cyfrą, nawiasem okrągłym lub kropką.
+-iserease - Funkcja sprawdzająca czy znak c jest znakiem usuwającym zawartość inputa (bakspace lub delete).
+-kw - funkcja definująca kolejność działań arytmetycznych.
+-convertToONP - Funkcja konwertująca wyrażenie expr do ONP.
+-evalONP - Funkcja obliczająca wyrażenie exprONP i zapisująca wynik w -zmiennej evaluation.
+-convertToStrRep - Funkcja konwertująca wynik wyrażenia z postaci mpf_t do postaci char*.
+main.c:
+-handle_keystrokes - pętla obsługująca wciśnięte przyciski (na klawiaturze lub na myszce) do momentu wciśnięcia znaku esc lub q.
+Stałe użyte w programie: 
+CALC_COLS, CALC_LINES - wielkość okna kalkulatora (78 kolumn x 23 wierszy).
+CALC_MAX_INPUT- maksymalna ilość znaków w INPUCIE.
+Struktury użyte w programie:
+WINDOW_INPUT - struktura zawierająca informacje o inpucie kalkulatora (okno inputa, pozycja wpisywanej liczby - kursora, wielkość i zawartość bufora przetrzymującego znaki wpisywane do inputa).
+calc_t - Struktura zawierająca wszystkie okna (wraz z inputem) występujące w kalkulatorze.
+window_config_t - struktura zawierająca informację o każdym oknie z kalkulatora(wysokość, szerokość, etykieta).  
+zmienne globalne :
+Struktura (typu calc_t) calc reprezentująca okno kalkulatora  wraz z oknami przycisków.
+Niestandardowe biblioteki użyte w programie:
+-ncurses.h
+-gmp.h
+Postępy pracy:
+1. tydzień: stworzono interfejs kalkulatora.
+2. tydzień: wprowadzono do kalkulatora możliwość wczytywania danych przy pomocy klawiatury, kalkulator wykonuje proste operacje arytmetyczne, stworzono plik wykonywalny Makefile.
+3. tydzień: wprowadzono do kalkulatora można wczytywania danych przy pomocy myszki(jednak tylko w trybie tekstowym), kalkulator wykonuje obliczenia na wyrażeniach składających się z nawiasów, użyto biblioteki GMP do umożliwienia działań arytmetycznych na liczbach spoza zakresu unsigned long long int.
